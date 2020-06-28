@@ -19,4 +19,8 @@ class Prize extends Model
     public function prizeImages(){
         return $this->hasMany('App\PrizeImage','prize_id');
     }
+
+    public function delivery(){
+        return $this->belongsTo('App\Delivery','delivery_id');
+    }
 }

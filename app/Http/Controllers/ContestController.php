@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class ContestController extends Controller
 {
   public function getContests(){
-    return Contest::with('prizes','prizes.prizeImages')->get();
+    return Contest::with('question','prizes','prizes.delivery','prizes.prizeImages')->get();
   }
   public function hostContest(Request $req){
           //  Store contest details excepts prizes List

@@ -25,4 +25,8 @@ class Contest extends Model
     public function prizes(){
         return $this->hasMany('App\Prize','contest_id');
     }
+    
+    public function question(){
+        return $this->belongsTo('App\Question','question_id');
+    }
 }
