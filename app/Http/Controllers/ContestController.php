@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class ContestController extends Controller
 {
   public function getContests(){
-    return Contest::with('question','prizes','prizes.delivery','prizes.prizeImages')->get();
+    return Contest::with('user','question','prizes','prizes.delivery','prizes.prizeImages')->get();
   }
   public function hostContest(Request $req){
           //  Store contest details excepts prizes List
@@ -44,15 +44,15 @@ class ContestController extends Controller
       }
 
       public function endedContest(){
-        return Contest::where('ended',"1")->with('prizes','prizes.prizeImages')->get();
+        return Contest::where('ended',"1")->with('user','question','prizes','prizes.delivery','prizes.prizeImages')->get();
       }
 
       public function liveContest(){
-        return Contest::where('ended',"0")->with('prizes','prizes.prizeImages')->get();
+        return Contest::where('ended',"0")->orderBy('id', 'DESC')->with('user','question','prizes','prizes.delivery','prizes.prizeImages')->get();
       }
 
       public function contestWinner(){
-        return Winner::with('user','contest','contest.prizes','contest.prizes.prizeImages')->get();
+        return Winner::with('user','contest','contest.user','contest.prizes','contest.question','contest.prizes.delivery','contest.prizes.prizeImages')->get();
       }
 
 
