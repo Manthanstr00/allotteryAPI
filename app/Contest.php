@@ -29,4 +29,13 @@ class Contest extends Model
     public function question(){
         return $this->belongsTo('App\Question','question_id');
     }
+
+    public function winner(){
+        return $this->hasOne('App\Winner', 'contest_id');
+    }
+
+    public function favourite()
+    {
+        return $this->hasMany('App\Favourite', 'contest_id');
+    }
 }

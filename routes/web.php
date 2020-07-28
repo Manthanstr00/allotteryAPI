@@ -11,6 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Auth::routes();
+
+Route::group(['middleware' => ['auth']], function () {
+
+        Route::get('/','HomeController@index')->name('home');
+        Route::get('dashboard','AdminController@index')->name('dashboard');
+        Route::get('host','AdminController@hostContest')->name('host');
+        Route::get('hosted','AdminController@hostedContests')->name('hosted');
+        Route::get('trending','AdminController@trendingContests')->name('trending');
+
+    });

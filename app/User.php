@@ -16,12 +16,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name','last_name', 'profile_image','email', 'password','phone','fcm_token',
+        'first_name','last_name', 'profile_image','email', 'password','phone','fcm_token','type','remember_token'
     ];
-    
-    protected $table = "al_users";
+
+    protected  $table = "al_users";
 
     public function hostedContests(){
-        return $this->hasMany('App\Contest');
+        return $this->hasMany('App\Contest','contest_id');
     }
 }

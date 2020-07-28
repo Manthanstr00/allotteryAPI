@@ -5,13 +5,18 @@ use App\Contest;
 use App\Prize;
 use App\PrizeImage;
 use App\Winner;
+use App\Favourite;
 use Illuminate\Http\Request;
 
 class ContestController extends Controller
 {
+
   public function getContests(){
-    return Contest::with('user','question','prizes','prizes.delivery','prizes.prizeImages')->get();
+    return Contest::with('user','question','prizes','prizes.delivery','prizes.prizeImages','favourite')->with(['favourite' => function ($query){
+      $query->where('user_id', 15);   
+  }])->get();
   }
+
   public function hostContest(Request $req){
           //  Store contest details excepts prizes List
           $contest = $req->except('prizes');
@@ -47,16 +52,30 @@ class ContestController extends Controller
         return Contest::where('ended',"1")->with('user','question','prizes','prizes.delivery','prizes.prizeImages')->get();
       }
 
-      public function liveContest(){
-        return Contest::where('ended',"0")->orderBy('id', 'DESC')->with('user','question','prizes','prizes.delivery','prizes.prizeImages')->get();
+      public function pass($data){
+        return $data;
       }
 
-      public function contestWinner(){
+      public function liveContest($user_id){
+        // return $user_id;
+        return Contest::where('ended',"0")
+        ->orderBy('id', 'DESC')
+        ->with('user','question','prizes','prizes.delivery','prizes.prizeImages','favourite')
+        ->with(['favourite' => function ($query) use ($user_id){
+          $query->where('user_id', $user_id);   
+      }])->get();
+      }
+
+      public function liveGrandContests(){
+        return Contest::where(['ended'=>'0','contest_type'=>'grand'])->orderBy('id', 'DESC')->with('user','question','prizes','prizes.delivery','prizes.prizeImages')->get();
+      }
+
+      public function contestWinner($contestId){
+        return Winner::with('user')->where('contest_id',$contestId)->first();
+      }
+
+      public function contestWinners(){
         return Winner::with('user','contest','contest.user','contest.prizes','contest.question','contest.prizes.delivery','contest.prizes.prizeImages')->get();
       }
 
-
-      public function enterContest(){
-        
-      }
-}
+} 

@@ -16,4 +16,6 @@ class Winner extends Model
     public function contest(){
         return $this->belongsTo('App\Contest','contest_id');
     }
+
+    
 }
